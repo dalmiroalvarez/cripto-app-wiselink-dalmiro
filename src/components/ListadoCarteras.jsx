@@ -1,6 +1,6 @@
 import NuevaCartera from "./NuevaCartera"
 
-const ListadoCarteras = ({carteras}) => {
+const ListadoCarteras = ({carteras, setCarteraEditar, eliminarCartera}) => {
   return (
     <div className="listado-gastos contenedor">
         <h2>{carteras.length ? 'Mis Carteras' : 'Todavía no has creado carteras.'}</h2>
@@ -8,6 +8,8 @@ const ListadoCarteras = ({carteras}) => {
             <NuevaCartera 
                 key={cartera.id}
                 cartera={cartera}
+                setCarteraEditar={setCarteraEditar}
+                eliminarCartera={eliminarCartera}
             />
         ))}
     </div>

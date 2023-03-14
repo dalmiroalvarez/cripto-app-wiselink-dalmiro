@@ -4,12 +4,24 @@ import cerrarModalBtn from '../../img/cerrar.svg'
 import Mensaje from './Mensaje'
 
 
-const Modal = ({setModal, animarModal, setAnimalModal, guardarCartera}) => {
+const Modal = ({setModal, animarModal, setAnimalModal, guardarCartera, carteraEditar}) => {
     
     const [nombrecartera, setNombrecartera] = useState('')
     const [nombrecripto, setNombrecripto] = useState('- Seleccione Criptomoneda -')
     const [cantidad, setCantidad] = useState(0)
     const [mensaje, setMensaje] = useState('')
+    const [id, setId] = useState('')
+    const [fecha, setFecha] = useState('')
+
+    useEffect(() => {
+        if(Object.keys(carteraEditar).length > 0) {
+            setNombrecartera(carteraEditar.nombrecartera)
+            setNombrecripto(carteraEditar.nombrecripto)
+            setCantidad(carteraEditar.cantidad)
+            setId(carteraEditar.id)
+            setFecha(carteraEditar.fecha)
+          }
+    }, [])
 
     const [criptomonedas, setCriptomonedas] = useState([])    
     
@@ -56,7 +68,7 @@ const Modal = ({setModal, animarModal, setAnimalModal, guardarCartera}) => {
             setMensaje('')
         }, 2000);
     }
-    guardarCartera({nombrecartera, nombrecripto, cantidad})
+    guardarCartera({nombrecartera, nombrecripto, cantidad, id, fecha})
 
   }
 
@@ -73,7 +85,7 @@ const Modal = ({setModal, animarModal, setAnimalModal, guardarCartera}) => {
             className={`formulario ${animarModal ? 'animar' : 'cerrar' }`}
             onSubmit={handleSubmit}
         >
-            <legend>Nueva Cartera</legend>
+            <legend>{carteraEditar.nombrecartera ? 'Editar Cartera' : 'Nueva Cartera'}</legend>
             {mensaje && <Mensaje tipo='error'>{mensaje}</Mensaje>}
             <div className='campo'>
                 <label htmlFor='cartera'>Nombre de tu Cartera</label>
@@ -108,12 +120,12 @@ const Modal = ({setModal, animarModal, setAnimalModal, guardarCartera}) => {
                     type='number'
                     placeholder='Añade la cantidad'
                     value={cantidad}
-                    onChange={e => setCantidad(e.target.value)}
+                    onChange={e => setCantidad(Number(e.target.value))}
                 />
             </div>
                 <input
                     type='submit'
-                    value='Agregar'
+                    value={carteraEditar.nombrecartera ? 'Guardar Cambios' : 'Agregar Cartera'}
                 />            
         </form>
     </div>

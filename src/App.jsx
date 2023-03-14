@@ -1,6 +1,6 @@
 import '/index.css'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // COMPONENTS
 import Header from './components/Header';
@@ -20,8 +20,21 @@ function App() {
   const [animarModal, setAnimalModal] = useState(false)
   const [carteras, setCarteras] = useState([])
 
+  const [carteraEditar, setCarteraEditar] = useState({})
+
+  useEffect(()=> {
+    if(Object.keys(carteraEditar).length > 0) {
+      setModal(true)    
+
+    setTimeout(() => {
+      setAnimalModal(true)
+    }, 500);
+    }
+  }, [carteraEditar])
+
   const handleNuevaCartera = () => {
     setModal(true)
+    setCarteraEditar({})
 
     setTimeout(() => {
       setAnimalModal(true)
@@ -29,20 +42,29 @@ function App() {
   }
   
   const guardarCartera = cartera => {
-    cartera.id = generarId();
-    cartera.fecha = Date.now();
-    setCarteras([...carteras, cartera])
+    if(cartera.id) {
+      const carteraActualizada = carteras.map( carteraState => carteraState.id === cartera.id ? cartera : carteraState )
 
-    setAnimalModal(false)
-      
+      setCarteras(carteraActualizada)
+    } else {
+      cartera.id = generarId();
+      cartera.fecha = Date.now();
+      setCarteras([...carteras, cartera])      
+    }
+    setAnimalModal(false)      
       setTimeout(() => {
         setModal(false)          
     }, 500);
   }
 
+  const eliminarCartera = id => {
+    console.log('Eliminando', id)
+  }
+
   return (
     <>
-    <Header 
+    <Header
+      carteras={carteras} 
       dinero={dinero}
       setDinero={setDinero}
       dineroValido={dineroValido}
@@ -54,6 +76,8 @@ function App() {
       <main>
         <ListadoCarteras 
           carteras={carteras}
+          setCarteraEditar={setCarteraEditar}
+          eliminarCartera={eliminarCartera}
         />
       </main>
       <div className='nuevo-gasto'>
@@ -73,6 +97,7 @@ function App() {
         animarModal={animarModal}
         setAnimalModal={setAnimalModal}
         guardarCartera={guardarCartera}
+        carteraEditar={carteraEditar}
       />}
 
     </>

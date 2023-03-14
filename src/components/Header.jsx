@@ -3,13 +3,14 @@ import Cartera from './Cartera'
 import DefinirDinero from './DefinirDinero'
 
 
-const Header = ({dinero, setDinero, dineroValido, setDineroValido}) => {
+const Header = ({dinero, setDinero, dineroValido, setDineroValido, carteras}) => {
   return (
     <header>
         <h1>Cartera de Criptomonedas</h1>
         
         {dineroValido ? (
-            <Cartera 
+            <Cartera
+                carteras={carteras} 
                 dinero={dinero}
             /> ) : (
             <DefinirDinero 
