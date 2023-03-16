@@ -1,44 +1,59 @@
+// HOOKS
 import { useState, useEffect } from "react"
 
-const Cartera = ({carteras, dinero}) => {
-  
+// REACT-CIRCULAR PROGRESS BAR
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
+import 'react-circular-progressbar/dist/styles.css'
+
+const Cartera = ({carteras, dinero, setCarteras, setDinero, setDineroValido}) => {
+    
   const [disponible, setDisponible] = useState(0)
   const [gastado, setGastado] = useState(0)
 
   const [porcentaje, setPorcentaje] = useState(0)
   
-  useEffect (() => {
-    const totalGastado = carteras.reduce ((total, cartera) => cartera.cantidad + total, 0);
+   useEffect (() => {
+   const totalGastado = carteras.reduce ((total, cartera) => cartera.cantidad + total, 0);
     
-    const totalDisponible = dinero - totalGastado;
+     const totalDisponible = dinero - totalGastado;
 
-    //Calcular el porcentaje gastado
+     //Calcular el porcentaje gastado
 
-    // const nuevoPorcentaje = (((presupuesto - totalDisponible) / presupuesto) * 100).toFixed(2);
+     const nuevoPorcentaje = (((dinero - totalDisponible) / dinero) * 100).toFixed(2);
     
-    //setTimeout(() => {
-      //  setPorcentaje(nuevoPorcentaje)            
-    //}, 1000);      
+     setTimeout(() => {
+        setPorcentaje(nuevoPorcentaje)            
+     }, 1000);      
     
-    setGastado(totalGastado)
-    setDisponible(totalDisponible)
-}, [carteras])
+     setGastado(totalGastado)
+     setDisponible(totalDisponible)
+ }, [carteras])
 
-  const formatearCantidad = (cantidad) => {
+  
+// Pasar al valor
+const formatearCantidad = (cantidad) => {
     return cantidad.toLocaleString('es-AR', {
       style: 'currency',
       currency:'ARS'
     })
   }
-  
+
   return (
       <>
       <div className="contenedor-presupuesto contenedor sombra dos-columnas">
           <div>
-              <p>Grafica Aqui</p>
+              <CircularProgressbar
+                styles={buildStyles({
+                  pathColor: porcentaje > 100 ? '#dc2626' : '#7c81c6',
+                  trailColor: '#f5f5f5',
+                  textColor: porcentaje > 100 ? '#dc2626' : '#7c81c6'
+                })}                
+                value={porcentaje}
+                text={`${porcentaje}% Gastado`}
+              />
           </div>      
-          <div className="contenido-presupuesto">
-              <p>
+          <div className="contenido-presupuesto">                
+              <p className={`${disponible < 0 ? 'negativo' : '' }`}>
                 <span>Presupuesto: </span>{formatearCantidad(dinero)}
               </p>
               <p>

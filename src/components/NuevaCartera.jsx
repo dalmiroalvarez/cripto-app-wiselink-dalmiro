@@ -1,5 +1,7 @@
+// HELPERS
 import { formatearFecha } from "../helpers";
 
+// REACT-SWIPEABLE-LIST
 import {
     LeadingActions,
     SwipeableList,
@@ -9,7 +11,7 @@ import {
 } from 'react-swipeable-list'
 import 'react-swipeable-list/dist/styles.css'
 
-const NuevaCartera = ({cartera, setCarteraEditar}) => {
+const NuevaCartera = ({cartera, setCarteraEditar, eliminarCartera}) => {
     const {nombrecartera, nombrecripto, cantidad, fecha, id} = cartera;
 
     const leadingActions = () => (
@@ -22,7 +24,7 @@ const NuevaCartera = ({cartera, setCarteraEditar}) => {
     
     const trailingActions = () => (
         <TrailingActions>
-            <SwipeAction onClick={() => console.log('Eliminandou')}>
+            <SwipeAction onClick={() => eliminarCartera(id)} destructive={true}>
                 Eliminar
             </SwipeAction>
         </TrailingActions>        

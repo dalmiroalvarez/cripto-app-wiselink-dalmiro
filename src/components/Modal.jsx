@@ -1,10 +1,14 @@
+// HOOKS
 import { useEffect, useState } from 'react'
 
+//IMAGES
 import cerrarModalBtn from '../../img/cerrar.svg'
+
+// COMPONENTS
 import Mensaje from './Mensaje'
 
 
-const Modal = ({setModal, animarModal, setAnimalModal, guardarCartera, carteraEditar}) => {
+const Modal = ({setModal, animarModal, setAnimalModal, guardarCartera, carteraEditar, setCarteraEditar}) => {
     
     const [nombrecartera, setNombrecartera] = useState('')
     const [nombrecripto, setNombrecripto] = useState('- Seleccione Criptomoneda -')
@@ -13,6 +17,7 @@ const Modal = ({setModal, animarModal, setAnimalModal, guardarCartera, carteraEd
     const [id, setId] = useState('')
     const [fecha, setFecha] = useState('')
 
+    
     useEffect(() => {
         if(Object.keys(carteraEditar).length > 0) {
             setNombrecartera(carteraEditar.nombrecartera)
@@ -52,6 +57,7 @@ const Modal = ({setModal, animarModal, setAnimalModal, guardarCartera, carteraEd
 
   const cerrarModal = () => {
       setAnimalModal(false)
+      setCarteraEditar({})
       
       setTimeout(() => {
         setModal(false)          
@@ -88,11 +94,11 @@ const Modal = ({setModal, animarModal, setAnimalModal, guardarCartera, carteraEd
             <legend>{carteraEditar.nombrecartera ? 'Editar Cartera' : 'Nueva Cartera'}</legend>
             {mensaje && <Mensaje tipo='error'>{mensaje}</Mensaje>}
             <div className='campo'>
-                <label htmlFor='cartera'>Nombre de tu Cartera</label>
+                <label htmlFor='cartera'>Usuario</label>
                 <input
                     id='cartera'
                     type='text'
-                    placeholder='Añade el nombre de tu cartera'
+                    placeholder={carteraEditar? nombrecartera : 'Añade el nombre de tu cartera'}
                     onChange={e => setNombrecartera(e.target.value)}
                     
                 />
@@ -101,7 +107,7 @@ const Modal = ({setModal, animarModal, setAnimalModal, guardarCartera, carteraEd
                 {/*API*/}
                 <label htmlFor='cripto'>Criptomoneda Deseada</label>
                 <select onChange={e => setNombrecripto(e.target.value)}>
-                    <option>- Seleccione Criptomoneda -</option>
+                    <option>{carteraEditar? carteraEditar.nombrecripto : '- Seleccione Criptomoneda -' }</option>
                     {criptomonedas.map(cripto => (
                 <option 
                     key={cripto.id} 

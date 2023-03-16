@@ -1,6 +1,10 @@
+// HOOKS
 import {useState} from 'react'
+
+// COMPONENTS
 import Mensaje from './Mensaje'
 
+// Añadiendo Dinero a la cuenta.
 const DefinirDinero = ({dinero, setDinero, setDineroValido}) => {
 
   const [mensaje, setMensaje] = useState('')
@@ -35,6 +39,7 @@ const DefinirDinero = ({dinero, setDinero, setDineroValido}) => {
           />
           <h4>Para poder realizar transacciones requerimos que establezcas tu presupuesto.</h4>
           
+          {/* Alerta */}
           {mensaje && <Mensaje tipo='error'>{mensaje}</Mensaje>}
 
         </div>
